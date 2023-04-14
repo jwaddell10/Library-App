@@ -1,0 +1,9 @@
+.form-popup {
+    display: none;
+}
+
+.form-container {
+    display: block;
+    max-width: 300px;
+    padding: 10px;
+  }
