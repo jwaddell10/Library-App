@@ -15,15 +15,25 @@
 
     </div>
     <div class="form-popup" id="popUpForm">
-        <form action="example.com/path" class="form-container">
-          <input type="text" id="title" placeholder="Title">
-          <input type="author" id="author" placeholder="Author">
-          <input type="pages" id="pages" placeholder="Pages">
+        <form action="" class="form-container">
+            <label for="title">Title:</label>
+          <input type="text" id="title" placeholder="Title" required>
+
+          <label for="author">Author:</label>
+          <input type="text" id="author" placeholder="Author" required>
+
+          <label for="pages">Pages:</label>
+          <input type="number" id="pages" placeholder="Pages" required>
+
           <input type="checkbox" id="readOption" name="readOption">
           <label for="readOption">Have you read it?</label>
-          <button type="submit">Submit</button>
+          <button type="submit" id="submit">Submit</button>
         </form>
-
+    </div>
+<div class="table">
+    <table id="table">
+stuff here
+</table></div>
 	<script src="index.js"></script>
   </body>
 </html>
