@@ -29,20 +29,44 @@ book.pages = document.getElementById('pages').value,
     
 }
 
-function bookInfo() {
-    document.getElementById('title').value;
-    
-}
 
 //adds book object to html
 
 function render() {
     document.querySelector('#addBtn').addEventListener('click', function() {
     const bookTitle = document.createElement('div');
-    const bookTitleText = document.createTextNode(document.getElementById('title').value);
+    const bookTitleText = document.createTextNode("Title:" + document.getElementById('title').value);
     bookTitle.appendChild(bookTitleText);
-    const currentDiv = document.getElementById("titlediv");
-    document.body.insertBefore(bookTitle, currentDiv);
+    const titleDiv = document.getElementById("titlediv");
+    document.body.insertBefore(bookTitle, titleDiv);
+
+    const bookAuthor = document.createElement('div');
+    const bookAuthorText = document.createTextNode("Author:" + document.getElementById('author').value);
+    bookAuthor.appendChild(bookAuthorText);
+    const authorDiv = document.getElementById("authorDiv");
+    document.body.insertBefore(bookAuthor, authorDiv);
+
+    const bookPages = document.createElement('div');
+    const bookPagesText = document.createTextNode("Pages:" + document.getElementById('pages').value);
+    bookPages.appendChild(bookPagesText);
+    const pagesDiv = document.getElementById("pagesdiv");
+    document.body.insertBefore(bookPages, pagesDiv);
+
+    const checkbox = document.getElementById('readOption').checked;
+    console.log(checkbox);
+        if(checkbox == true){
+            const bookRead = document.createElement('div');
+            const bookReadText = document.createTextNode("Read");
+            bookPages.appendChild(bookReadText);
+            const readDiv = document.getElementById("readdiv");
+            document.body.insertBefore(bookRead, readDiv);
+        } else {
+            const bookRead = document.createElement('div');
+            const bookReadText = document.createTextNode("Not Read");
+            bookPages.appendChild(bookReadText);
+            const readDiv = document.getElementById("readdiv");
+            document.body.insertBefore(bookRead, readDiv);
+        }
     });
 
     /*for (let i = 0; i <= myLibrary.length; i++) {
