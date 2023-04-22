@@ -7,3 +7,8 @@
     max-width: 500px;
     padding: 10px;
   }
+
+#myBooks {
+    display: flex;
+    width: 100%;
+}
