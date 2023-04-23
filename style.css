@@ -2,13 +2,11 @@
     display: none;
 }
 
-.form-container {
-    display: block;
-    max-width: 500px;
-    padding: 10px;
-  }
+#Library-container {
+    display: grid;
+    grid-template-columns: repeat(4, 25%);
+}
 
-#myBooks {
-    display: flex;
-    width: 100%;
+.cards {
+    height: 100px;
 }

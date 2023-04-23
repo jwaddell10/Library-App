@@ -1,12 +1,13 @@
 const $form = document.querySelector("form").addEventListener("submit", (e) => {
     e.preventDefault();
     newBook();
+    //createCard();
    // addBookToLibrary();
     
   });
 
 let myLibrary = [];
-
+console.log(myLibrary);
 //book class constructor
 
 class Book {
@@ -17,7 +18,6 @@ class Book {
         //this.read = form.read.checked; 
     }
 }
-
 //creates book and adds it to myLibrary array
 
 function newBook() {
@@ -29,43 +29,61 @@ book.pages = document.getElementById('pages').value,
     
 }
 
-
-//adds book object to html
-
-function render() {
+/*function createCard() {
+    
     document.querySelector('#addBtn').addEventListener('click', function() {
-    const bookTitle = document.createElement('div');
+        const createCard = document.createElement('div');
+        createCard.innerText = bookTitle + bookAuthorText
+        document.getElementById('cards').appendChild(createCard);
+        console.log(bookTitle.innerText);
+    });
+}
+const bookTitleText = document.createTextNode("Title:" + document.getElementById('title').value);
+const bookAuthorText = document.createTextNode("Author:" + document.getElementById('author').value);*/
+
+
+//adds book object to html from array
+
+function createBook() {
+
+    document.querySelector('#addBtn').addEventListener('click', function() {
+
+    const createCard = document.createElement('div');
+        //variable to append items to library container, variable to append items to card container
+    const libraryContainer = document.getElementById('Library-container');
+    const cards = document.querySelector('.cards');    
+    
+    //creates booktitle text to append to library container
     const bookTitleText = document.createTextNode("Title:" + document.getElementById('title').value);
-    bookTitle.appendChild(bookTitleText);
-    const titleDiv = document.getElementById("titlediv");
-    document.body.insertBefore(bookTitle, titleDiv);
+    libraryContainer.classList.add('cards');
+    cards.appendChild(createCard);
+    cards.appendChild(bookTitleText);
 
-    const bookAuthor = document.createElement('div');
+
+   //creates bookauthor text so i can append it to library container
     const bookAuthorText = document.createTextNode("Author:" + document.getElementById('author').value);
-    bookAuthor.appendChild(bookAuthorText);
-    const authorDiv = document.getElementById("authorDiv");
-    document.body.insertBefore(bookAuthor, authorDiv);
+    libraryContainer.appendChild(bookAuthorText);
+    
 
-    const bookPages = document.createElement('div');
+    //creates bookpages text so i can append it to library container
     const bookPagesText = document.createTextNode("Pages:" + document.getElementById('pages').value);
-    bookPages.appendChild(bookPagesText);
-    const pagesDiv = document.getElementById("pagesdiv");
-    document.body.insertBefore(bookPages, pagesDiv);
+    libraryContainer.appendChild(bookPagesText);
+    
 
+    
+    //checks if read? checkbox is clicked or not
     const checkbox = document.getElementById('readOption').checked;
-    console.log(checkbox);
+
         if(checkbox == true){
-            const bookRead = document.createElement('div');
             const bookReadText = document.createTextNode("Read");
-            bookPages.appendChild(bookReadText);
+            libraryContainer.appendChild(bookReadText);
             const readDiv = document.getElementById("readdiv");
-            document.body.insertBefore(bookRead, readDiv);
+            document.body.insertBefore(libraryContainer, readDiv);
         } else {
-            const bookRead = document.createElement('div');
             const bookReadText = document.createTextNode("Not Read");
-            bookPages.appendChild(bookReadText);
+            libraryContainer.appendChild(bookReadText);
             const readDiv = document.getElementById("readdiv");
-            document.body.insertBefore(bookRead, readDiv);
+            document.body.insertBefore(libraryContainer, readDiv);
         }
     });
 
@@ -75,11 +93,10 @@ function render() {
             document.querySelector("#myBooks").innerHTML = string.replace("[", "").replace("\"", "").replace("]", "");
 }*/
 }
-render();
-/*function addBookToLibrary() {
-    
 
-}*/
+createBook();
+
+
 
 
 //pops-up form that gets book information from user
