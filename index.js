@@ -1,102 +1,7 @@
 const $form = document.querySelector("form").addEventListener("submit", (e) => {
     e.preventDefault();
-    newBook();
-    //createCard();
-   // addBookToLibrary();
-    
+   addBookToLibrary();
   });
-
-let myLibrary = [];
-console.log(myLibrary);
-//book class constructor
-
-class Book {
-    constructor(title, author, pages, read) {
-        this.title = title; 
-        this.author = author; 
-        this.pages = pages; 
-        //this.read = form.read.checked; 
-    }
-}
-//creates book and adds it to myLibrary array
-
-function newBook() {
-    const book = new Book();
-book.title = document.getElementById('title').value,
-book.author = document.getElementById('author').value,
-book.pages = document.getElementById('pages').value,
-    myLibrary.push(book);
-    
-}
-
-/*function createCard() {
-    
-    document.querySelector('#addBtn').addEventListener('click', function() {
-        const createCard = document.createElement('div');
-        createCard.innerText = bookTitle + bookAuthorText
-        document.getElementById('cards').appendChild(createCard);
-        console.log(bookTitle.innerText);
-    });
-}
-const bookTitleText = document.createTextNode("Title:" + document.getElementById('title').value);
-const bookAuthorText = document.createTextNode("Author:" + document.getElementById('author').value);*/
-
-
-//adds book object to html from array
-
-function createBook() {
-
-    document.querySelector('#addBtn').addEventListener('click', function() {
-
-    const createCard = document.createElement('div');
-        //variable to append items to library container, variable to append items to card container
-    const libraryContainer = document.getElementById('Library-container');
-    const cards = document.querySelector('.cards');    
-    
-    //creates booktitle text to append to library container
-    const bookTitleText = document.createTextNode("Title:" + document.getElementById('title').value);
-    libraryContainer.classList.add('cards');
-    cards.appendChild(createCard);
-    cards.appendChild(bookTitleText);
-
-
-   //creates bookauthor text so i can append it to library container
-    const bookAuthorText = document.createTextNode("Author:" + document.getElementById('author').value);
-    libraryContainer.appendChild(bookAuthorText);
-    
-
-    //creates bookpages text so i can append it to library container
-    const bookPagesText = document.createTextNode("Pages:" + document.getElementById('pages').value);
-    libraryContainer.appendChild(bookPagesText);
-    
-
-    
-    //checks if read? checkbox is clicked or not
-    const checkbox = document.getElementById('readOption').checked;
-
-        if(checkbox == true){
-            const bookReadText = document.createTextNode("Read");
-            libraryContainer.appendChild(bookReadText);
-            const readDiv = document.getElementById("readdiv");
-            document.body.insertBefore(libraryContainer, readDiv);
-        } else {
-            const bookReadText = document.createTextNode("Not Read");
-            libraryContainer.appendChild(bookReadText);
-            const readDiv = document.getElementById("readdiv");
-            document.body.insertBefore(libraryContainer, readDiv);
-        }
-    });
-
-    /*for (let i = 0; i <= myLibrary.length; i++) {
-        const string = JSON.stringify(myLibrary, null, 4);
-
-            document.querySelector("#myBooks").innerHTML = string.replace("[", "").replace("\"", "").replace("]", "");
-}*/
-}
-
-createBook();
-
-
 
 
 //pops-up form that gets book information from user
@@ -105,3 +10,71 @@ const userInputButton = document.querySelector('.add-book')
 userInputButton.addEventListener("click", function() {
     document.getElementById('popUpForm').style.display = "block";
 })
+
+  myLibrary = [];
+
+  //instantiate Book Object
+  class Book {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
+  }
+
+  function addBookToLibrary() {
+    let libraryBook = document.querySelector('#Library-container')
+    let title = document.getElementById('title').value;
+    let author = document.getElementById('author').value;
+    let pages = document.getElementById('pages').value;
+    let read = document.getElementById('readOption').checked;
+    
+        let newBook = new Book(title, author, pages, read);
+
+    myLibrary.push(newBook);
+    render();
+    }
+
+ //render books onto html page
+ 
+  function render() {
+    let libraryBook = document.querySelector('#Library-container')
+    libraryBook.innerHTML = "";
+
+    for (let i = 0; i < myLibrary.length; i++) {
+    let book = myLibrary[i];
+    let bookEl = document.createElement('div');
+    bookEl.innerHTML = 
+        `<div class="card-header">
+        <h3 class="title">${book.title}</h3>
+        <h5 class="author">${book.author}</h5>
+        <h5 class="pages">${book.pages}</h5>
+        <h5 class="read">${book.read ? "Read" : "Not read yet"}</h5>
+        <button class="remove-Btn" onClick="removeBook(${i})">Remove</button>
+        <button class="toggle-read-btn" onClick="toggleRead(${i})">Read</button>`;
+    libraryBook.appendChild(bookEl);
+    }
+  }
+
+//function to remove book from html list
+
+  function removeBook(index) {
+    myLibrary.splice(index, 1);
+    render();
+  }
+
+  removeBook()
+
+
+
+//function to change if book was read or not
+
+Book.prototype.toggleRead = function() {
+    this.read = !this.read;
+  }
+
+  function toggleRead(index) {
+myLibrary[index].toggleRead();
+render();
+  }
