@@ -1,9 +1,76 @@
+body {
+    background-image: linear-gradient(to right, black, gray);
+}
+
+button {
+    border-radius: 10px;
+    background-color: whitesmoke;
+}
+
+.website-title {
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(to right, black, gray);
+    color: black;
+}
+
+.add-book-button {
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(to right, black, gray);
+}
+
+.add-book {
+    background-color: whitesmoke;
+    color:black;
+    border-radius: 25px;
+}
+.form {
+    display: flex;
+    justify-content: center;
+}
 .form-popup {
     display: none;
+}
+
+#popUpForm {
+    display: flex;  
+    justify-content: center;
+    border: 1px solid black;
+    border-radius: 25px;
+    background-color: gray;
+    padding: 20px;
+    width: 200px;
+    height: 150px;
 }
 
 #Library-container {
     display: grid;
     grid-template-columns: repeat(4, 25%);
+}
+
+.card-header {
+    height: auto;
+    border-radius: 10px;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: gray;
+}
+
+.title {
+    font-size: 2rem;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    width:100%;
+}
+
+.author, .read, .pages {
+    display: flex;
+    justify-content: center;
+    font-size: 1rem;
 }
 
