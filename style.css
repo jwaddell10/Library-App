@@ -1,5 +1,5 @@
 body {
-    background-image: linear-gradient(to right, black, gray);
+    background-image: linear-gradient(to right, rgb(32, 32, 32), rgb(96, 95, 95));
 }
 
 button {
@@ -10,14 +10,14 @@ button {
 .website-title {
     display: flex;
     justify-content: center;
-    background-image: linear-gradient(to right, black, gray);
+    background-image: linear-gradient(to right, rgb(32, 32, 32), rgb(96, 95, 95));
     color: black;
 }
 
 .add-book-button {
     display: flex;
     justify-content: center;
-    background-image: linear-gradient(to right, black, gray);
+    background-image: linear-gradient(to right, rgb(32, 32, 32), rgb(96, 95, 95));
 }
 
 .add-book {
