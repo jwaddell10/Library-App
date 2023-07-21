@@ -7,6 +7,7 @@
 const $form = document.querySelector('form').addEventListener('submit', (e) => {
   e.preventDefault();
   addBookToLibrary();
+  addToLocalStorage();
 });
 
 // pops-up form that gets book information from user
@@ -83,6 +84,10 @@ function toggleRead(index) {
 }
 
 // localstorage
-localStorage.setItem(myLibrary, JSON.stringify(myLibrary));
+
+function addToLocalStorage() {
+  localStorage.setItem(myLibrary, JSON.stringify(myLibrary));
+}
+
 console.log(JSON.stringify(myLibrary));
 console.log(localStorage);
