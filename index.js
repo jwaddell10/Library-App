@@ -53,7 +53,8 @@ function render() {
     bookEl.innerHTML = `<div class="card-header">
         <h3 class="title">${book.title}</h3>
         <h5 class="author">${book.author}</h5>
-        <h5 class="pages">${book.pages}` + ` pages</h5>
+        <h5 class="pages">${book.pages}`
+      + ` pages</h5>
         <h5 class="read">${book.read ? 'Read' : 'Not read yet'}</h5>
         <button class="remove-Btn" onClick="removeBook(${i})">Remove</button>
         <button class="toggle-read-btn" onClick="toggleRead(${i})">Read</button>`;
@@ -80,3 +81,8 @@ function toggleRead(index) {
   myLibrary[index].toggleRead();
   render();
 }
+
+// localstorage
+localStorage.setItem(myLibrary, JSON.stringify(myLibrary));
+console.log(JSON.stringify(myLibrary));
+console.log(localStorage);
