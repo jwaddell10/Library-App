@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-useless-concat */
 /* eslint-disable no-plusplus */
 /* eslint-disable func-names */
@@ -7,7 +8,11 @@
 const $form = document.querySelector('form').addEventListener('submit', (e) => {
   e.preventDefault();
   addBookToLibrary();
-  addToLocalStorage();
+  localStorage.removeItem('myLibrary');
+  console.log(JSON.stringify(myLibrary), 'this is myLibraryStringified');
+  libraryBookLocalStorage.populateStorage();
+  libraryBookLocalStorage.getStorage();
+  libraryBookLocalStorage.renderLocalStorage();
 });
 
 // pops-up form that gets book information from user
@@ -17,7 +22,7 @@ userInputButton.addEventListener('click', () => {
   document.getElementById('popUpForm').style.display = 'block';
 });
 
-myLibrary = [];
+let myLibrary = [];
 
 // instantiate Book Object
 class Book {
@@ -74,10 +79,6 @@ removeBook();
 
 // function to change if book was read or not
 
-Book.prototype.toggleRead = function () {
-  this.read = !this.read;
-};
-
 function toggleRead(index) {
   myLibrary[index].toggleRead();
   render();
@@ -85,9 +86,57 @@ function toggleRead(index) {
 
 // localstorage
 
-function addToLocalStorage() {
-  localStorage.setItem(myLibrary, JSON.stringify(myLibrary));
-}
+const libraryBookLocalStorage = (() => {
+  function populateStorage() {
+    const myLibraryString = JSON.stringify(myLibrary).replace(/]\|[[]/g, '');
+    console.log(myLibraryString, 'this is the string');
+    const stringifyBooks = JSON.stringify(myLibraryString);
+    const libraryBookStorage = window.localStorage.setItem('myLibrary', stringifyBooks);
+    console.log(libraryBookStorage, 'this is librarystorage');
+    console.log(JSON.stringify(myLibrary));
+    console.log(myLibrary);
+    const isThisEmpty = !localStorage.getItem('myLibrary');
+    console.log(isThisEmpty, 'is it empty?');
+  }
 
-console.log(JSON.stringify(myLibrary));
+  function getStorage() {
+    const getBookItems = window.localStorage.getItem('myLibrary');
+    console.log(getBookItems, 'these are book items');
+    const stringBookReturn = JSON.parse(getBookItems);
+    console.log(stringBookReturn, 'this is stringBookReturn');
+    myLibrary.push(...stringBookReturn);
+    console.log(myLibrary);
+  }
+
+  function renderLocalStorage() {
+    for (let i = 0; i < myLibrary.length; i++) {
+      const getLocalStorage = localStorage.getItem('myLibrary');
+      console.log(getLocalStorage, 'this is getLocalStorage');
+      const stringReturn = JSON.parse(getLocalStorage);
+      console.log(stringReturn, 'this is stringReturn');
+      const newLibraryList = document.querySelector('#Library-container');
+      const newDiv = document.createElement('div');
+      newDiv.textContent = myLibrary;
+      newLibraryList.appendChild(newDiv);
+    }
+  }
+  return {
+    populateStorage,
+    getStorage,
+    renderLocalStorage,
+  };
+})();
+/* function renderLocalStorage() {
+  for (let i = 0; i < myLibrary.length; i++) {
+    const getLocalStorage = localStorage.getItem('myLibrary');
+    console.log(getLocalStorage, 'this is getLocalStorage');
+    const stringReturn = JSON.parse(getLocalStorage);
+    console.log(stringReturn, 'this is stringReturn');
+    const newLibraryList = document.querySelector('#Library-container');
+    const newDiv = document.createElement('div');
+    newDiv.textContent = myLibrary;
+    newLibraryList.appendChild(newDiv);
+  }
+} */
+
 console.log(localStorage);
