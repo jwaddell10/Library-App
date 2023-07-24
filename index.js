@@ -8,19 +8,17 @@
 const $form = document.querySelector('form').addEventListener('submit', (e) => {
   e.preventDefault();
   addBookToLibrary();
-  localStorage.removeItem('myLibrary');
-  console.log(JSON.stringify(myLibrary), 'this is myLibraryStringified');
   libraryBookLocalStorage.populateStorage();
+  console.log(myLibrary);
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  console.log('this is running and loading content');
   libraryBookLocalStorage.getStorage();
   libraryBookLocalStorage.renderLocalStorage();
 });
 
 // pops-up form that gets book information from user
-
-const userInputButton = document.querySelector('.add-book');
-userInputButton.addEventListener('click', () => {
-  document.getElementById('popUpForm').style.display = 'block';
-});
 
 let myLibrary = [];
 
@@ -45,6 +43,7 @@ function addBookToLibrary() {
 
   myLibrary.push(newBook);
   render();
+  libraryBookLocalStorage.renderLocalStorage();
 }
 
 // render books onto html page
@@ -88,35 +87,44 @@ function toggleRead(index) {
 
 const libraryBookLocalStorage = (() => {
   function populateStorage() {
-    const myLibraryString = JSON.stringify(myLibrary).replace(/]\|[[]/g, '');
-    console.log(myLibraryString, 'this is the string');
-    const stringifyBooks = JSON.stringify(myLibraryString);
-    const libraryBookStorage = window.localStorage.setItem('myLibrary', stringifyBooks);
-    console.log(libraryBookStorage, 'this is librarystorage');
+    // const myLibraryString = JSON.stringify(myLibrary).replace(/]\|[[]/g, '');
+    // console.log(myLibraryString, 'this is the string');
+    const stringifyBooks = JSON.stringify(myLibrary);
     console.log(JSON.stringify(myLibrary));
+    const libraryBookStorage = window.localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+    console.log(libraryBookStorage, 'this is librarystorage');
+    console.log(JSON.stringify(myLibrary), 'this is librarystringified');
     console.log(myLibrary);
     const isThisEmpty = !localStorage.getItem('myLibrary');
     console.log(isThisEmpty, 'is it empty?');
   }
 
   function getStorage() {
+    const stringifyBooks = JSON.stringify(myLibrary);
     const getBookItems = window.localStorage.getItem('myLibrary');
     console.log(getBookItems, 'these are book items');
-    const stringBookReturn = JSON.parse(getBookItems);
+    const stringBookReturn = JSON.parse(stringifyBooks);
     console.log(stringBookReturn, 'this is stringBookReturn');
     myLibrary.push(...stringBookReturn);
     console.log(myLibrary);
   }
 
   function renderLocalStorage() {
-    for (let i = 0; i < myLibrary.length; i++) {
-      const getLocalStorage = localStorage.getItem('myLibrary');
-      console.log(getLocalStorage, 'this is getLocalStorage');
-      const stringReturn = JSON.parse(getLocalStorage);
-      console.log(stringReturn, 'this is stringReturn');
+    const getLocalStorage = localStorage.getItem('myLibrary');
+    console.log(getLocalStorage, 'this is getLocalStorage');
+    const stringReturn = JSON.parse(localStorage.getItem('myLibrary'));
+    console.log(stringReturn[0].title);
+    console.log(stringReturn, 'this is stringReturn');
+    for (let i = 0; i < stringReturn.length; i++) {
       const newLibraryList = document.querySelector('#Library-container');
       const newDiv = document.createElement('div');
-      newDiv.textContent = myLibrary;
+      newDiv.innerHTML = `<div class='cards-headers'>
+    <h3 class ='title'>${stringReturn[i].title}</h3>
+    <h5 class ='author'>${stringReturn[i].author}</h5>
+    <h5 class ='pages'>${stringReturn[i].pages}</h5>
+    <h5 class="read">${stringReturn.read ? 'Read' : 'Not read yet'}</h5>
+        <button class="remove-Btn" onClick="removeBook(${i})">Remove</button>
+        <button class="toggle-read-btn" onClick="toggleRead(${i})">Read</button>`;
       newLibraryList.appendChild(newDiv);
     }
   }
