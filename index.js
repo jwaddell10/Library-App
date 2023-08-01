@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 /* eslint-disable no-console */
 /* eslint-disable no-useless-concat */
 /* eslint-disable no-plusplus */
@@ -8,20 +9,16 @@
 const $form = document.querySelector('form').addEventListener('submit', (e) => {
   e.preventDefault();
   addBookToLibrary();
-  libraryBookLocalStorage.populateStorage();
-  console.log(myLibrary);
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log('this is running and loading content');
-  libraryBookLocalStorage.getStorage();
   libraryBookLocalStorage.renderLocalStorage();
 });
 
 // pops-up form that gets book information from user
 
-let myLibrary = [];
-
+const myLibrary = [];
+const localStorageLibrary = [];
 // instantiate Book Object
 class Book {
   constructor(title, author, pages, read) {
@@ -42,8 +39,9 @@ function addBookToLibrary() {
   const newBook = new Book(title, author, pages, read);
 
   myLibrary.push(newBook);
+  libraryBookLocalStorage.populateStorage();
+  console.log(localStorage, 'this is localStorage check');
   render();
-  libraryBookLocalStorage.renderLocalStorage();
 }
 
 // render books onto html page
@@ -89,49 +87,47 @@ const libraryBookLocalStorage = (() => {
   function populateStorage() {
     // const myLibraryString = JSON.stringify(myLibrary).replace(/]\|[[]/g, '');
     // console.log(myLibraryString, 'this is the string');
-    const stringifyBooks = JSON.stringify(myLibrary);
-    console.log(JSON.stringify(myLibrary));
     const libraryBookStorage = window.localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
-    console.log(libraryBookStorage, 'this is librarystorage');
-    console.log(JSON.stringify(myLibrary), 'this is librarystringified');
-    console.log(myLibrary);
-    const isThisEmpty = !localStorage.getItem('myLibrary');
-    console.log(isThisEmpty, 'is it empty?');
   }
 
   function getStorage() {
-    const stringifyBooks = JSON.stringify(myLibrary);
-    const getBookItems = window.localStorage.getItem('myLibrary');
-    console.log(getBookItems, 'these are book items');
-    const stringBookReturn = JSON.parse(stringifyBooks);
-    console.log(stringBookReturn, 'this is stringBookReturn');
-    myLibrary.push(...stringBookReturn);
-    console.log(myLibrary);
+    const stringReturn = JSON.parse(localStorage.getItem('myLibrary'));
+    console.log(stringReturn, 'this is tringreturn');
+  }
+
+  function removeFromDOM() {
+    const elem = document.getElementById('localstoragedivs');
+    elem.remove();
+  }
+
+  function removeFromLocalStorage(i) {
+    const books = JSON.parse(localStorage.getItem('myLibrary'));
+    books.splice(i, 1);
+    console.log(i);
+    console.log(books);
   }
 
   function renderLocalStorage() {
-    const getLocalStorage = localStorage.getItem('myLibrary');
-    console.log(getLocalStorage, 'this is getLocalStorage');
     const stringReturn = JSON.parse(localStorage.getItem('myLibrary'));
-    console.log(stringReturn[0].title);
-    console.log(stringReturn, 'this is stringReturn');
     for (let i = 0; i < stringReturn.length; i++) {
       const newLibraryList = document.querySelector('#Library-container');
       const newDiv = document.createElement('div');
+      newDiv.setAttribute('id', 'localstoragedivs');
       newDiv.innerHTML = `<div class='cards-headers'>
     <h3 class ='title'>${stringReturn[i].title}</h3>
     <h5 class ='author'>${stringReturn[i].author}</h5>
-    <h5 class ='pages'>${stringReturn[i].pages}</h5>
-    <h5 class="read">${stringReturn.read ? 'Read' : 'Not read yet'}</h5>
-        <button class="remove-Btn" onClick="removeBook(${i})">Remove</button>
+    <h5 class ='pages'>${stringReturn[i].pages}</h5>`
+    + `<h5 class="read">${stringReturn.read ? 'Read' : 'Not read yet'}</h5>
+        <button class="remove-Btn" onClick="localStorage.removeItem('myLibrary')">Remove</button>
         <button class="toggle-read-btn" onClick="toggleRead(${i})">Read</button>`;
       newLibraryList.appendChild(newDiv);
     }
   }
   return {
     populateStorage,
-    getStorage,
     renderLocalStorage,
+    getStorage,
+    removeFromLocalStorage,
   };
 })();
 /* function renderLocalStorage() {
@@ -146,5 +142,3 @@ const libraryBookLocalStorage = (() => {
     newLibraryList.appendChild(newDiv);
   }
 } */
-
-console.log(localStorage);
