@@ -9,6 +9,7 @@
 const $form = document.querySelector('form').addEventListener('submit', (e) => {
   e.preventDefault();
   addBookToLibrary();
+  libraryBookLocalStorage.renderLocalStorage();
 });
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -39,7 +40,6 @@ function addBookToLibrary() {
   const newBook = new Book(title, author, pages, read);
 
   myLibrary.push(newBook);
-  libraryBookLocalStorage.populateStorage();
   console.log(localStorage, 'this is localStorage check');
   render();
 }
@@ -130,6 +130,8 @@ const libraryBookLocalStorage = (() => {
     removeFromLocalStorage,
   };
 })();
+
+const closeBtn = `<button type='button' class='close-default' onclick='libraryBooks.splice(libraryBooks.findIndex((book) => book.title === "${Book.title}" && book.author === "${Book.author}"), 1);'>x</button>`;
 /* function renderLocalStorage() {
   for (let i = 0; i < myLibrary.length; i++) {
     const getLocalStorage = localStorage.getItem('myLibrary');
