@@ -1,29 +1,23 @@
-/* eslint-disable no-debugger */
-/* eslint-disable no-console */
-/* eslint-disable no-useless-concat */
+/* eslint-disable max-len */
 /* eslint-disable no-plusplus */
-/* eslint-disable func-names */
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-use-before-define */
+/* eslint-disable no-console */
+
+/* eslint-disable no-unused-vars */
 const $form = document.querySelector('form').addEventListener('submit', (e) => {
   e.preventDefault();
   addBookToLibrary();
-  console.log(myLibrary);
   JSON.parse(localStorage.getItem('myLibrary'));
-  libraryBookLocalStorage.renderLocalStorage();
+  render();
 });
 
 window.addEventListener('DOMContentLoaded', () => {
-  libraryBookLocalStorage.renderLocalStorage();
+  render();
 });
 
 // pops-up form that gets book information from user
 
-const myLibrary = JSON.parse(localStorage.getItem('myLibrary')) || [];
-JSON.parse(localStorage.getItem('myLibrary'));
-console.log(myLibrary);
-const localStorageLibrary = [];
+let myLibrary = [];
 // instantiate Book Object
 class Book {
   constructor(title, author, pages, read) {
@@ -42,48 +36,49 @@ function addBookToLibrary() {
   const read = document.getElementById('readOption').checked;
 
   const newBook = new Book(title, author, pages, read);
-
   myLibrary.push(newBook);
+  // eslint-disable-next-line no-use-before-define
   libraryBookLocalStorage.populateStorage();
-
-  console.log(localStorage, 'this is localStorage check');
+  console.log(myLibrary);
   // render();
 }
 
+function removeBook(index) {
+  myLibrary.splice(index, 1);
+}
 // render books onto html page
 
-// function render() {
-//   const libraryBook = document.querySelector('#Library-container');
-//   libraryBook.innerHTML = '';
+function render() {
+  libraryBookLocalStorage.checkLocalStorage();
+  const libraryBook = document.querySelector('#Library-container');
+  libraryBook.innerHTML = '';
 
-//   for (let i = 0; i < myLibrary.length; i++) {
-//     const book = myLibrary[i];
-//     const bookEl = document.createElement('div');
-//     bookEl.innerHTML = `<div class="card-header">
-//         <h3 class="title">${book.title}</h3>
-//         <h5 class="author">${book.author}</h5>
-//         <h5 class="pages">${book.pages}`
-//       + ` pages</h5>
-//         <h5 class="read">${book.read ? 'Read' : 'Not read yet'}</h5>
-//         <button class="remove-Btn" onClick="removeBook(${i})">Remove</button>
-//         <button class="toggle-read-btn" onClick="toggleRead(${i})">Read</button>`;
-//     libraryBook.appendChild(bookEl);
-//   }
-// }
+  for (let i = 0; i < myLibrary.length; i++) {
+    const book = myLibrary[i]; const bookEl = document.createElement('div');
+    bookEl.innerHTML = `<div class="card-header">
+         <h3 class="title">${book.title}</h3>
+        <h5 class="author">${book.author}</h5>
+         <h5 class="pages">${book.pages}`
+       + ` pages</h5>
+         <h5 class="read">${book.read ? 'Read' : 'Not read yet'}</h5>
+         <button id="remove-Btn(${i})" onClick="removeBookFromLibrary(${i})">Remove</button>
+         <button class="toggle-read-btn" onClick="toggleRead(${i})">Read</button>`;
+    libraryBook.appendChild(bookEl);
+  }
+}
 
-// function to remove book from html list
-
-/* function removeBook(index) {
-  myLibrary.splice(index, 1);
+function removeBookFromLibrary(i) {
+  myLibrary.splice(i, 1);
+  libraryBookLocalStorage.populateStorage();
   render();
 }
 
-removeBook(); */
+// function to remove book from html list
 
-// function to change if book was read or not
+// function to change if book was read or not ***Need to fix this!***
 
-function toggleRead(index) {
-  myLibrary[index].toggleRead();
+function toggleRead(i) {
+  myLibrary[i].toggleRead();
   render();
 }
 
@@ -96,60 +91,21 @@ const libraryBookLocalStorage = (() => {
     const libraryBookStorage = window.localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
   }
 
-  function getStorage() {
-    const stringReturn = JSON.parse(localStorage.getItem('myLibrary'));
-    console.log(stringReturn, 'this is tringreturn');
-  }
-
-  function removeFromDOM() {
-    const elem = document.getElementById('localstoragedivs');
-    elem.remove();
-  }
-
-  function removeFromLocalStorage(i) {
-    const books = JSON.parse(localStorage.getItem('myLibrary'));
-    books.splice(i, 1);
-    console.log(i);
-    console.log(books);
-  }
-
-  function renderLocalStorage() {
-    // updatelocalstorage () { set innerhtml = ''}
-    const libraryContainer = document.querySelector('#Library-container');
-    libraryContainer.innerHTML = '';
-    const stringReturn = JSON.parse(localStorage.getItem('myLibrary'));
-    for (let i = 0; i < stringReturn.length; i++) {
-      const newLibraryList = document.querySelector('#Library-container');
-      const newDiv = document.createElement('div');
-      newDiv.setAttribute('id', 'localstoragedivs');
-      newDiv.innerHTML = `<div class='cards-headers'>
-    <h3 class ='title'>${stringReturn[i].title}</h3>
-    <h5 class ='author'>${stringReturn[i].author}</h5>
-    <h5 class ='pages'>${stringReturn[i].pages}</h5>`
-    + `<h5 class="read">${stringReturn.read ? 'Read' : 'Not read yet'}</h5>
-        <button class="remove-Btn" onClick="localStorage.removeItem('myLibrary')">Remove</button>
-        <button class="toggle-read-btn" onClick="toggleRead(${i})">Read</button>`;
-      newLibraryList.appendChild(newDiv);
+  function checkLocalStorage() {
+    if (localStorage.getItem('myLibrary')) {
+      myLibrary = JSON.parse(localStorage.getItem('myLibrary'));
+    } else {
+      myLibrary = [];
     }
   }
+
+  function updateLocalStorage() {
+    localStorage.setItem('myLibrary', JSON.stringify(myLibrary));
+  }
+
   return {
     populateStorage,
-    renderLocalStorage,
-    getStorage,
-    removeFromLocalStorage,
+    checkLocalStorage,
+    updateLocalStorage,
   };
 })();
-
-const closeBtn = `<button type='button' class='close-default' onclick='libraryBooks.splice(libraryBooks.findIndex((book) => book.title === "${Book.title}" && book.author === "${Book.author}"), 1);'>x</button>`;
-/* function renderLocalStorage() {
-  for (let i = 0; i < myLibrary.length; i++) {
-    const getLocalStorage = localStorage.getItem('myLibrary');
-    console.log(getLocalStorage, 'this is getLocalStorage');
-    const stringReturn = JSON.parse(getLocalStorage);
-    console.log(stringReturn, 'this is stringReturn');
-    const newLibraryList = document.querySelector('#Library-container');
-    const newDiv = document.createElement('div');
-    newDiv.textContent = myLibrary;
-    newLibraryList.appendChild(newDiv);
-  }
-} */
