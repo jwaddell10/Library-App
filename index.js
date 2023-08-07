@@ -7,7 +7,6 @@
 const $form = document.querySelector('form').addEventListener('submit', (e) => {
   e.preventDefault();
   addBookToLibrary();
-  JSON.parse(localStorage.getItem('myLibrary'));
   render();
 });
 
@@ -29,7 +28,6 @@ class Book {
 }
 
 function addBookToLibrary() {
-  const libraryBook = document.querySelector('#Library-container');
   const title = document.getElementById('title').value;
   const author = document.getElementById('author').value;
   const pages = document.getElementById('pages').value;
@@ -37,16 +35,22 @@ function addBookToLibrary() {
 
   const newBook = new Book(title, author, pages, read);
   myLibrary.push(newBook);
-  // eslint-disable-next-line no-use-before-define
   libraryBookLocalStorage.populateStorage();
   console.log(myLibrary);
-  // render();
 }
 
-function removeBook(index) {
-  myLibrary.splice(index, 1);
+function removeBookFromLibrary(i) {
+  myLibrary.splice(i, 1);
+  libraryBookLocalStorage.populateStorage();
+  render();
 }
-// render books onto html page
+
+// function to change if book was read or not ***Need to fix this!***
+
+function toggleRead(i) {
+  myLibrary[i].toggleRead();
+  render();
+}
 
 function render() {
   libraryBookLocalStorage.checkLocalStorage();
@@ -65,21 +69,6 @@ function render() {
          <button class="toggle-read-btn" onClick="toggleRead(${i})">Read</button>`;
     libraryBook.appendChild(bookEl);
   }
-}
-
-function removeBookFromLibrary(i) {
-  myLibrary.splice(i, 1);
-  libraryBookLocalStorage.populateStorage();
-  render();
-}
-
-// function to remove book from html list
-
-// function to change if book was read or not ***Need to fix this!***
-
-function toggleRead(i) {
-  myLibrary[i].toggleRead();
-  render();
 }
 
 // localstorage
